@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Play RPS Game!</title>
+    <link href="./rps.css" rel="stylesheet" />
+  </head>
+  <body>
+  
+    <div class="container">
+            <div class="menu-home">
+                <a href="./game_homepage.html" class="home-button"><img class = "home" src="./img/home.png"></a>
+            </div>
+      <div class="game-box">
+        <div class="game-top">✨가위바위보 게임✨</div>
+        <div class="img-box">
+          <div id="img2"></div>
+        </div>
+        <div class="btn-box">
+          <button id="btn3" class="btn-dark" value="✌️">가위</button>
+          <button id="btn3" class="btn-dark" value="✊">바위</button>
+          <button id="btn3" class="btn-dark" value="🖐">보</button>
+        </div>
+      </div>
+      <div id="modal-layer" class="modal-layer modal" style="display: none">
+        <div class="rps-result">
+          <div id="result" class = "modal-result">다시 누르기!</div><br>
+          <div> You : <span id="user-result" class="modal-user">?</span></div>
+          <div>Computer : <span id="computer-result" class="modal-com">?</span></div>
+        </div>
+          <button id="modal-btn" class="btn-danger" type="button">닫기</button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    let rock = "<img src=./img/rock.png>";
+    let paper = "<img src=./img/paper.png>";
+    let scissors = "<img src=./img/scissor.png>";
+    let arrRpsp = [rock, paper, scissors];
+
+    let interval = setInterval(function () {
+    let randomRps = Math.floor(Math.random() * 3);
+      $("#img2").html(arrRpsp[randomRps]);
+    }, 100);
+
+    $(document).ready(function () {
+      let result = ["✌️", "✊", "🖐"];
+      let user;
+      let computer;
+
+      getComputer = function () {
+        let resultIndex = [];
+        for (let i = 0; i < 3; i++) {
+          resultIndex[i] = Math.floor(Math.random() * 3);
+          for (let j = 0; j < i; j++) {
+            if (resultIndex[i] == resultIndex[j]) {
+              i--;
+            }
+            console.log(resultIndex[i]);
+          }
+          computer = result[resultIndex];
+          return computer;
+        }
+      };
+
+      getResult = function (user, computer) {
+        if (user == computer) {
+          return "무승부!";
+        } else {
+          switch (user + computer) {
+            case "✌️🖐":
+            case "✊✌️":
+            case "🖐✊":
+              return "승리!";
+              break;
+            case "✌️✊":
+            case "🖐✊":
+            case "🖐✌️":
+              return "패배!";
+              break;
+          }
+        }
+      };
+
+      $(".btn-box").click(function (event) {
+        user = $(event.target).val();
+        // console.log(user);
+        // console.log(getComputer());
+        // console.log(getResult(user, computer));
+        $("#user-result").text(user);
+        $("#computer-result").text(getComputer());
+        $("#result").text(getResult(user, computer));
+
+          
+        $("#modal-layer").modal('show');
+        $("#modal-btn").click(function(){
+          $('#modal-layer').modal('hide');
+                })
+      });
+    });
+
+  </script>
+</html>
+
